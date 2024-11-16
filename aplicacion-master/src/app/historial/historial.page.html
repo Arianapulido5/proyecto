@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="/principal" slot="start"></ion-back-button>
+    <ion-title>Historial de Pedidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Fecha:</ion-label>
+    <ion-datetime-button datetime="date-picker"></ion-datetime-button>
+  </ion-item>
+  
+  <ion-modal [keepContentsMounted]="true">
+    <ng-template>
+      <ion-datetime 
+        id="date-picker"
+        presentation="date"
+        [value]="selectedDate"
+        (ionChange)="onDateChange($event)"
+      ></ion-datetime>
+    </ng-template>
+  </ion-modal>
+
+  <ion-list *ngIf="filteredOrders.length > 0">
+    <ion-item-group *ngFor="let order of filteredOrders">
+      <ion-item (click)="toggleOrder(order)" button detail="true">
+        <ion-label>
+          <h2>Pedido {{order.id}} - Mesa {{order.tableNumber}}</h2>
+          <p>Fecha: {{order.orderDate | date:'dd/MM/yyyy'}}</p>
+        </ion-label>
+      </ion-item>
+      
+      <div *ngIf="order.isExpanded">
+        <ion-item *ngFor="let item of order.items">
+          <ion-label>
+            <h3>{{item.name}}</h3>
+            <p *ngIf="item.notes">Notas: {{item.notes}}</p>
+          </ion-label>
+          <ion-badge slot="end">{{item.quantity}}</ion-badge>
+        </ion-item>
+      </div>
+    </ion-item-group>
+  </ion-list>
+
+  <ion-item *ngIf="filteredOrders.length === 0">
+    <ion-label>
+      No hay pedidos para esta fecha
+    </ion-label>
+  </ion-item>
+</ion-content>

@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(#1b1a1a80, #1b1a1a80), url('/assets/img/fondo.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+ion-header {
+  background-color: black;
+  ion-toolbar {
+      --background: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      ion-back-button {
+        color: white;
+        position: absolute;
+        margin-left: 1px;
+      }
+      
+      ion-title {
+        color: white;
+        font-size: 20px;
+        text-align: center;
+    }
+  }
+}
+
+ion-content {
+  --background: linear-gradient(#00000080, #00000080), url('/assets/img/fondo.jpg') no-repeat center center / cover;
+  min-height: 100vh;
+  --padding-top: 30px;  /* Increased top padding to lower content */
+  --padding-start: 20px;
+  --padding-end: 20px;
+}
+
+/* Rest of your CSS remains the same */

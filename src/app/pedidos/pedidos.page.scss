@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(#1b1a1a80, #1b1a1a80), url('/assets/img/fondo.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  
+  ion-header {
+    background-color: black;
+  
+    ion-toolbar {
+      --background: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  
+      ion-back-button {
+        color: white;
+        position: absolute;
+        margin-left: 1px;
+      }
+  
+      h1 {
+        color: white;
+        font-size: 20px;
+        text-align: center;
+      }
+    }
+  }
+  
+  ion-content {
+    --background: linear-gradient(#00000080, #00000080), url('/assets/img/fondo.jpg') no-repeat center center / cover;
+    display: flex;
+    flex-direction: column;
+    padding: 0; 
+  
+    .mesa-selector {
+      display: flex;
+      overflow-x: auto; 
+      padding: 10px 0; 
+  
+      ion-button {
+        font-size: 12px;
+        text-align: left;
+        margin-right: 10px; 
+      }
+    }
+  
+    ion-item {
+      margin: 0; 
+    }
+  
+    .productos-list {
+      margin: 10px 0; 
+    }
+  
+    .orden-actual {
+      margin-top: 20px; 
+      padding: 10px;
+  
+      ion-toolbar {
+        margin-bottom: 10px; 
+      }
+  
+      ion-list {
+        ion-item {
+          display: flex;
+          align-items: center;
+  
+          ion-label {
+            flex: 1; 
+          }
+  
+          .nota-input {
+            width: 150px;
+          }
+  
+          div[slot='end'] {
+            display: flex;
+            align-items: center;
+            margin-left: 10px; 
+            
+            ion-button {
+              margin: 0 5px;
+            }
+  
+            ion-button[color='danger'] {
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+  
+      // Total
+      .total-item {
+        h2 {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  
+  ion-footer {
+    ion-toolbar {
+      display: flex;
+      justify-content: center; 
+  
+      ion-buttons {
+        margin: 0 5px; 
+      }
+  
+      ion-button {
+        width: 100%; 
+        max-width: 200px; 
+      }
+    }
+  }
+  
+
+  

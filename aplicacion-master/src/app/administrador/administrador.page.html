@@ -1,0 +1,57 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button defaultHref="/principal" slot="start"></ion-back-button>
+    <ion-title>Administrador</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Selector de Mesas -->
+  <div class="lista-item">
+    <ion-item>
+      <ion-label>Seleccionar Mesa</ion-label>
+      <ion-select [(ngModel)]="mesaSeleccionada">
+        <ion-select-option *ngFor="let mesa of mesas" [value]="mesa">Mesa {{mesa}}</ion-select-option>
+      </ion-select>
+      <ion-button (click)="agregarMesa()" color="primary">Agregar</ion-button>
+    </ion-item>
+  </div>
+
+  <!-- Agregar Categoría -->
+  <div class="lista-item">
+    <ion-item>
+      <ion-label>Nueva Categoría</ion-label>
+      <ion-input [(ngModel)]="nuevaCategoria" placeholder="Nombre de la categoría"></ion-input>
+      <ion-button (click)="agregarCategoria()" color="primary">Agregar</ion-button>
+    </ion-item>
+  </div>
+
+  <!-- Selector de Categoría -->
+  <div class="lista-item">
+    <ion-item>
+      <ion-label>Seleccionar Categoría</ion-label>
+      <ion-select (ionChange)="seleccionarCategoria($event)">
+        <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">
+          {{categoria.nombre}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+  </div>
+
+  <!-- Agregar Producto -->
+  <div *ngIf="categoriaSeleccionada" class="lista-item">
+    <ion-item>
+      <ion-label>Nombre del Producto</ion-label>
+      <ion-input [(ngModel)]="nuevoProducto.nombre" placeholder="Nombre"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Precio</ion-label>
+      <ion-input type="number" [(ngModel)]="nuevoProducto.precio" placeholder="Precio"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Descripción</ion-label>
+      <ion-input [(ngModel)]="nuevoProducto.descripcion" placeholder="Descripción"></ion-input>
+    </ion-item>
+    <ion-button (click)="agregarProducto()" color="primary">Agregar Producto</ion-button>
+  </div>
+</ion-content>

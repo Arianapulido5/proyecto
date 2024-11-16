@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-toolbar>
+    <h1>PEDIDOS</h1>
+    <ion-back-button defaultHref="/principal" slot="start"></ion-back-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Seleccionar mesa</h2>
+
+  <!-- Buscador de mesa -->
+  <ion-searchbar
+    placeholder="Buscar mesa"
+    (ionInput)="buscarMesa($event)"
+    [debounce]="250"
+  ></ion-searchbar>
+
+  <!-- Selector de Mesa-->
+  <div class="mesa-selector">
+    <ion-button 
+      *ngFor="let mesa of mesasFiltradas" 
+      [color]="mesaSeleccionada === mesa ? 'primary' : 'medium'"
+      (click)="seleccionarMesa(mesa)">
+      {{mesa}}
+    </ion-button>
+  </div>
+
+  <ng-container *ngIf="mesaSeleccionada">
+    <!-- Selector de Categoría -->
+    <ion-item>
+      <ion-label>Categoría</ion-label>
+      <ion-select (ionChange)="cambiarCategoria($event)">
+        <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">
+          {{categoria.nombre}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Lista de Productos -->
+    <ion-list class="productos-list">
+      <ion-item *ngFor="let producto of productosMostrados" button (click)="agregarProducto(producto)">
+        <ion-label>
+          <h2>{{producto.nombre}}</h2>
+          <p *ngIf="producto.descripcion">{{producto.descripcion}}</p>
+        </ion-label>
+        <ion-note slot="end">$ {{producto.precio.toFixed(2)}}</ion-note>
+      </ion-item>
+    </ion-list>
+
+    <!-- Lista de Pedidos -->
+    <div class="orden-actual" *ngIf="ordenActual.length > 0">
+      <ion-toolbar color="light">
+        <ion-title>Mesa {{mesaSeleccionada}}</ion-title>
+      </ion-toolbar>
+
+      <ion-list>
+        <ion-item *ngFor="let item of ordenActual">
+          <ion-label>
+            <h2>{{item.nombre}}</h2>
+            <ion-input 
+              placeholder="Agregar nota..." 
+              [(ngModel)]="item.nota"
+              class="nota-input">
+            </ion-input>
+          </ion-label>
+          <div slot="end" class="botones-cantidad">
+            <ion-button fill="clear" size="small" (click)="actualizarCantidad(item, -1)">
+              <ion-icon name="remove"></ion-icon>
+            </ion-button>
+            <span>{{item.cantidad}}</span>
+            <ion-button fill="clear" size="small" (click)="actualizarCantidad(item, 1)">
+              <ion-icon name="add"></ion-icon>
+            </ion-button>
+            <ion-button fill="clear" color="danger" (click)="eliminarItem(item)">
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </div>
+        </ion-item>
+      </ion-list>
+      
+    </div>
+  </ng-container>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="limpiarOrden()" [disabled]="!ordenActual.length">
+        Limpiar
+      </ion-button>
+    </ion-buttons>
+    <ion-title *ngIf="mesaSeleccionada">
+      Total: $ {{calcularTotal().toFixed(2)}}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-fab-button (click)="confirmarEnvio()" [disabled]="!ordenActual.length || !mesaSeleccionada">
+        <ion-icon name="send"></ion-icon>
+      </ion-fab-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

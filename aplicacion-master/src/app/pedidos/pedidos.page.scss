@@ -1,0 +1,122 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(#1b1a1a80, #1b1a1a80), url('/assets/img/fondo.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  
+  ion-header {
+    background-color: black;
+  
+    ion-toolbar {
+      --background: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  
+      ion-back-button {
+        color: white;
+        position: absolute;
+        margin-left: 1px;
+      }
+  
+      ion-title {
+        color: white;
+        font-size: 20px;
+        text-align: center;
+      }
+    }
+  }
+  
+  ion-content {
+    --background: linear-gradient(#00000080, #00000080), url('/assets/img/fondo.jpg') no-repeat center center / cover;
+    display: flex;
+    flex-direction: column;
+    padding: 0; // Elimina el padding por defecto
+  
+    .mesa-selector {
+      display: flex;
+      overflow-x: auto; // Permite desplazamiento horizontal
+      padding: 10px 0;  // Espaciado vertical
+  
+      ion-button {
+        font-size: 12px;
+        text-align: left;
+        margin-right: 10px; // Espaciado entre botones
+      }
+    }
+  
+    ion-item {
+      margin: 0; // Elimina márgenes por defecto en los items
+    }
+  
+    .productos-list {
+      margin: 10px 0; // Espaciado vertical entre la lista de productos y la siguiente sección
+    }
+  
+    .orden-actual {
+      margin-top: 20px; // Espaciado entre la lista de productos y la orden actual
+      padding: 10px;
+  
+      ion-toolbar {
+        margin-bottom: 10px; // Espaciado inferior del toolbar
+      }
+  
+      ion-list {
+        ion-item {
+          display: flex;
+          align-items: center; // Alinear elementos verticalmente
+  
+          ion-label {
+            flex: 1; // Permitir que el label tome el espacio disponible
+          }
+  
+          .nota-input {
+            width: 150px; // Ancho fijo para la nota
+          }
+  
+          div[slot='end'] {
+            display: flex;
+            align-items: center; // Alinear botones verticalmente
+            margin-left: 10px; // Espacio entre la etiqueta y los botones
+            
+            ion-button {
+              margin: 0 5px; // Espaciado horizontal entre botones
+            }
+  
+            // Aseguramos que el botón de eliminar sea visible
+            ion-button[color='danger'] {
+              margin-left: 10px; // Espacio adicional para el botón de eliminar
+            }
+          }
+        }
+      }
+  
+      // Total
+      .total-item {
+        h2 {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  
+  ion-footer {
+    ion-toolbar {
+      display: flex;
+      justify-content: center; // Centrar botones
+  
+      ion-buttons {
+        margin: 0 5px; // Espacio entre los botones
+      }
+  
+      ion-button {
+        width: 100%; // Hacer que los botones ocupen todo el ancho
+        max-width: 200px; // Ancho máximo
+      }
+    }
+  }
+  

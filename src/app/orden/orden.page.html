@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <h1>ÓRDEN</h1>
+    <ion-back-button defaultHref="/principal" slot="start"></ion-back-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar
+    [(ngModel)]="searchTerm"
+    placeholder="Buscar pedido o mesa"
+    (ionInput)="filterOrders()"
+  ></ion-searchbar>
+
+  <ion-list>
+    <ion-item-group *ngFor="let order of filteredOrders">
+      <ion-item (click)="toggleOrder(order)" button detail="true">
+        <ion-label>
+          Pedido {{order.id}} - Mesa {{order.tableNumber}}
+        </ion-label>
+      </ion-item>
+      
+      <div *ngIf="order.isExpanded">
+        <ion-item *ngFor="let item of order.items">
+          <ion-label>
+            <h2>{{item.name}}</h2>
+            <p *ngIf="item.notes">Notas: {{item.notes}}</p>
+          </ion-label>
+          <ion-badge slot="end">{{item.quantity}}</ion-badge>
+        </ion-item>
+        
+        <ion-item>
+          <ion-button 
+            expand="block" 
+            color="success" 
+            (click)="markAsCompleted(order)"
+            [disabled]="order.status === 'completed'">
+            Listo
+          </ion-button>
+        </ion-item>
+      </div>
+    </ion-item-group>
+  </ion-list>
+</ion-content>
