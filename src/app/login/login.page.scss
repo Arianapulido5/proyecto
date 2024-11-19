@@ -87,11 +87,6 @@
         transition: .4s;
     }
 
-
-
-  ion-fab-button {
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-    z-index: 10; // Asegúrate de que esté por encima de otros elementos
+  ion-button:hover {
+    opacity: 0.9;
   }

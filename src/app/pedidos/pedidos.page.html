@@ -43,7 +43,7 @@
           <h2>{{producto.nombre}}</h2>
           <p *ngIf="producto.descripcion">{{producto.descripcion}}</p>
         </ion-label>
-        <ion-note slot="end">$ {{producto.precio.toFixed(2)}}</ion-note>
+        <ion-note slot="end">{{producto.precio.toFixed(2)}}</ion-note>
       </ion-item>
     </ion-list>
 
@@ -56,24 +56,19 @@
       <ion-list>
         <ion-item *ngFor="let item of ordenActual">
           <ion-label>
-            <h2>{{item.nombre}}</h2>
-            <ion-input 
-              placeholder="Agregar nota..." 
+            <h2>{{ item.nombre }}</h2>
+            <ion-input
+              placeholder="Agregar nota"
               [(ngModel)]="item.nota"
               class="nota-input">
             </ion-input>
           </ion-label>
-          <div slot="end" class="botones-cantidad">
-            <ion-button fill="clear" size="small" (click)="actualizarCantidad(item, -1)">
-              <ion-icon name="remove"></ion-icon>
-            </ion-button>
-            <span>{{item.cantidad}}</span>
-            <ion-button fill="clear" size="small" (click)="actualizarCantidad(item, 1)">
-              <ion-icon name="add"></ion-icon>
-            </ion-button>
-            <ion-button fill="clear" color="danger" (click)="eliminarItem(item)">
-              <ion-icon name="trash"></ion-icon>
-            </ion-button>
+          <div class="botones">
+            <button (click)="actualizarCantidad(item, -1)">-</button>
+            <span>{{ item.cantidad }}</span>
+            <button (click)="actualizarCantidad(item, 1)">+</button>
+            <button (click)="eliminarProducto(item)">🗑️</button>
+            <span class="precio-total">{{ item.precioTotal.toFixed(2) }}</span>
           </div>
         </ion-item>
       </ion-list>
@@ -90,12 +85,17 @@
       </ion-button>
     </ion-buttons>
     <ion-title *ngIf="mesaSeleccionada">
-      Total: $ {{calcularTotal().toFixed(2)}}
+      Total: {{calcularTotal().toFixed(2)}}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-fab-button (click)="confirmarEnvio()" [disabled]="!ordenActual.length || !mesaSeleccionada">
-        <ion-icon name="send"></ion-icon>
-      </ion-fab-button>
+      <ion-button color="success" (click)="pagarCuenta()" [disabled]="!ordenActual.length || !mesaSeleccionada">
+        Pagar
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="confirmarEnvio()" [disabled]="!ordenActual.length || !mesaSeleccionada">
+      <ion-icon name="send"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-footer>
