@@ -1,22 +1,9 @@
+// src/app/historial/historial.page.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-
-interface OrderItem {
-  name: string;
-  quantity: number;
-  notes?: string;
-}
-
-interface HistoryOrder {
-  id: number;
-  tableNumber: number;
-  items: OrderItem[];
-  status: 'completed';
-  orderDate: string;
-  isExpanded: boolean;
-}
+import { OrderService, Order } from '../services/order.service';
 
 @Component({
   selector: 'app-historial',
@@ -26,69 +13,46 @@ interface HistoryOrder {
   imports: [IonicModule, CommonModule, FormsModule]
 })
 export class HistorialPage implements OnInit {
-  selectedDate: string;
-  filteredOrders: HistoryOrder[] = [];
+  historicalOrders: Order[] = [];
+  filteredOrders: Order[] = [];
+  searchTerm: string = '';
   
-  allOrders: HistoryOrder[] = [
-    {
-      id: 1,
-      tableNumber: 5,
-      status: 'completed',
-      orderDate: '2024-03-09',
-      isExpanded: false,
-      items: [
-        { name: 'Hamburguesa', quantity: 2 },
-        { name: 'Papas Fritas', quantity: 1, notes: 'Extra crujientes' }
-      ]
-    },
-    {
-      id: 2,
-      tableNumber: 3,
-      status: 'completed',
-      orderDate: '2024-03-09',
-      isExpanded: false,
-      items: [
-        { name: 'Pizza Margherita', quantity: 1 },
-        { name: 'Agua Mineral', quantity: 2 }
-      ]
-    },
-    {
-      id: 3,
-      tableNumber: 7,
-      status: 'completed',
-      orderDate: '2024-03-08',
-      isExpanded: false,
-      items: [
-        { name: 'Ensalada César', quantity: 1 },
-        { name: 'Pollo a la Parrilla', quantity: 1 }
-      ]
-    }
-  ];
-
-  constructor() {
-    this.selectedDate = new Date().toISOString().split('T')[0];
-    this.filterOrders();
-  }
+  constructor(private orderService: OrderService) {}
 
   ngOnInit() {
+    this.orderService.getHistoricalOrders().subscribe(orders => {
+      this.historicalOrders = orders.sort((a, b) => b.date.getTime() - a.date.getTime());
+      this.filterOrders();
+    });
   }
 
   filterOrders() {
-    if (this.selectedDate) {
-      this.filteredOrders = this.allOrders.filter(order => 
-        order.orderDate === this.selectedDate
-      );
-    } else {
-      this.filteredOrders = [...this.allOrders];
+    if (!this.searchTerm.trim()) {
+      this.filteredOrders = this.historicalOrders;
+      return;
     }
+
+    const term = this.searchTerm.toLowerCase();
+    this.filteredOrders = this.historicalOrders.filter(order =>
+      order.tableNumber.toString().includes(term) ||
+      order.items.some(item => item.name.toLowerCase().includes(term)) ||
+      order.status.toLowerCase().includes(term)
+    );
   }
 
-  toggleOrder(order: HistoryOrder) {
+  toggleOrder(order: Order) {
     order.isExpanded = !order.isExpanded;
   }
 
-  onDateChange(event: any) {
-    this.selectedDate = event.detail.value.split('T')[0];
-    this.filterOrders();
+  formatDate(date: Date): string {
+    return new Date(date).toLocaleString();
+  }
+
+  getStatusColor(status: string): string {
+    return status === 'completed' ? 'success' : 'warning';
+  }
+
+  getTotal(order: Order): string {
+    return order.total.toFixed(2);
   }
 }

@@ -3,13 +3,14 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
-
+import { OrderService, OrderItem } from '../services/order.service'; // Asegúrate de que la ruta sea correcta
 interface Producto {
   nombre: string;
   precio: number;
   descripcion?: string;
 }
 
+// En pedidos.page.ts
 interface ItemOrden {
   id: number; // Identificador único del ítem
   nombre: string; // Nombre del producto
@@ -42,11 +43,19 @@ export class PedidosPage implements OnInit {
   mesasFiltradas: number[] = this.mesas;
   total: number = 0;
 
-  private dragging = false; // Estado del arrastre
-  private offsetX = 0;
-  private offsetY = 0;
+ newOrder = {
+    id: 0,
+    tableNumber: null,
+    items: [],
+    status: 'pending',
+    orderDate: new Date().toISOString().split('T')[0],
+    isExpanded: false,
+  };
 
-  constructor(private alertController: AlertController) {}
+  constructor(
+    private alertController: AlertController,
+    private orderService: OrderService
+  ) {}
 
   ngOnInit() {
     this.inicializarCategorias();
@@ -222,22 +231,40 @@ export class PedidosPage implements OnInit {
   }
 
   async enviarOrden() {
-    // Aquí iría la lógica para enviar la orden al chef
-    console.log('Orden enviada:', {
-      mesa: this.mesaSeleccionada,
-      items: this.ordenActual,
-      total: this.total,
-    });
-
-    // Mostrar mensaje de éxito
-    const exitoEnvio = await this.alertController.create({
-      header: 'Orden Enviada',
-      message: 'La orden ha sido enviada exitosamente al chef.',
-      buttons: ['OK'],
-    });
-    await exitoEnvio.present();
-
-    this.limpiarOrden(); // Limpia la orden después de enviar
+    if (this.mesaSeleccionada !== null && this.ordenActual.length > 0) {
+      // Transformar ordenActual a OrderItem[]
+      const items: OrderItem[] = this.ordenActual.map(item => ({
+        name: item.nombre, // Asignar el nombre
+        quantity: item.cantidad, // Asignar la cantidad
+        precioUnitario: item.precioUnitario, // Asignar el precio unitario
+        precioTotal: item.precioTotal, // Asignar el precio total
+        notes: item.nota, // Asignar la nota si existe
+      }));
+  
+      this.orderService.addOrder(
+        this.mesaSeleccionada, // Número de mesa
+        items, // Items transformados a OrderItem[]
+        this.calcularTotal() // Total de la orden
+      );
+  
+      // Mostrar mensaje de éxito
+      const exitoEnvio = await this.alertController.create({
+        header: 'Orden Enviada',
+        message: 'La orden ha sido enviada exitosamente al chef.',
+        buttons: ['OK'],
+      });
+      await exitoEnvio.present();
+  
+      this.limpiarOrden(); // Limpia la orden después de enviar
+    } else {
+      // Manejar el caso en que no hay mesa seleccionada o no hay productos en la orden
+      const errorEnvio = await this.alertController.create({
+        header: 'Error',
+        message: 'Por favor, selecciona una mesa y agrega productos a la orden.',
+        buttons: ['OK'],
+      });
+      await errorEnvio.present();
+    }
   }
 
   async pagarCuenta() {

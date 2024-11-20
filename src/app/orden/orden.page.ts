@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms'; 
+import { OrderService } from '../services/order.service';
 
 interface OrderItem {
   name: string;
@@ -24,39 +25,23 @@ interface Order {
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule] 
 })
-export class OrdenPage implements OnInit {
-  orders: Order[] = [
-    {
-      id: 1,
-      tableNumber: 5,
-      status: 'pending',
-      isExpanded: false,
-      items: [
-        { name: 'Hamburguesa', quantity: 2 },
-        { name: 'Papas Fritas', quantity: 1, notes: 'Extra crujientes' },
-        { name: 'Refresco Cola', quantity: 2 }
-      ]
-    },
-    {
-      id: 2,
-      tableNumber: 3,
-      status: 'pending',
-      isExpanded: false,
-      items: [
-        { name: 'Pizza Margherita', quantity: 1 },
-        { name: 'Ensalada César', quantity: 1 },
-        { name: 'Agua Mineral', quantity: 2 }
-      ]
-    }
-  ];
 
+
+
+
+export class OrdenPage implements OnInit {
+  orders: Order[] = [];
   searchTerm: string = '';
   filteredOrders: Order[] = [];
 
-  constructor() { }
+
+  constructor(private orderService: OrderService) { }
 
   ngOnInit() {
-    this.filteredOrders = this.orders; 
+    this.orderService.getOrders().subscribe(orders => {
+      this.orders = orders;
+      this.filterOrders();
+    });
   }
 
   toggleOrder(order: Order) {
@@ -64,8 +49,7 @@ export class OrdenPage implements OnInit {
   }
 
   markAsCompleted(order: Order) {
-    order.status = 'completed';
-    console.log(`Order ${order.id} marked as completed`);
+    this.orderService.markOrderAsCompleted(order.id);
   }
 
   filterOrders() {

@@ -1,34 +1,28 @@
+<!-- src/app/historial/historial.page.html -->
 <ion-header>
   <ion-toolbar>
-    <h1>Historial de Pedidos</h1>
+    <h1>HISTORIAL</h1>
     <ion-back-button defaultHref="/principal" slot="start"></ion-back-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label>Fecha:</ion-label>
-    <ion-datetime-button datetime="date-picker"></ion-datetime-button>
-  </ion-item>
-  
-  <ion-modal [keepContentsMounted]="true">
-    <ng-template>
-      <ion-datetime 
-        id="date-picker"
-        presentation="date"
-        [value]="selectedDate"
-        (ionChange)="onDateChange($event)"
-      ></ion-datetime>
-    </ng-template>
-  </ion-modal>
+  <ion-searchbar
+    [(ngModel)]="searchTerm"
+    placeholder="Buscar por mesa, productos o estado"
+    (ionInput)="filterOrders()"
+  ></ion-searchbar>
 
-  <ion-list *ngIf="filteredOrders.length > 0">
+  <ion-list>
     <ion-item-group *ngFor="let order of filteredOrders">
       <ion-item (click)="toggleOrder(order)" button detail="true">
         <ion-label>
-          <h2>Pedido {{order.id}} - Mesa {{order.tableNumber}}</h2>
-          <p>Fecha: {{order.orderDate | date:'dd/MM/yyyy'}}</p>
+          <h2>Mesa {{order.tableNumber}} - Pedido {{order.id}}</h2>
+          <p>{{formatDate(order.date)}}</p>
         </ion-label>
+        <ion-badge [color]="getStatusColor(order.status)" slot="end">
+          {{order.status === 'completed' ? 'Completado' : 'Pendiente'}}
+        </ion-badge>
       </ion-item>
       
       <div *ngIf="order.isExpanded">
@@ -36,16 +30,23 @@
           <ion-label>
             <h3>{{item.name}}</h3>
             <p *ngIf="item.notes">Notas: {{item.notes}}</p>
+            <p>Precio unitario: ${{item.precioUnitario.toFixed(2)}}</p>
           </ion-label>
-          <ion-badge slot="end">{{item.quantity}}</ion-badge>
+          <ion-note slot="end">
+            <p>x{{item.quantity}}</p>
+            <p>${{item.precioTotal.toFixed(2)}}</p>
+          </ion-note>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label>
+            <h2>Total del pedido:</h2>
+          </ion-label>
+          <ion-note slot="end" color="primary">
+            <h2>${{getTotal(order)}}</h2>
+          </ion-note>
         </ion-item>
       </div>
     </ion-item-group>
   </ion-list>
-
-  <ion-item *ngIf="filteredOrders.length === 0">
-    <ion-label>
-      No hay pedidos para esta fecha
-    </ion-label>
-  </ion-item>
 </ion-content>
