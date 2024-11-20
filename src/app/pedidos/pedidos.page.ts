@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
 import { OrderService, OrderItem } from '../services/order.service'; // Asegúrate de que la ruta sea correcta
+import { jsPDF } from 'jspdf'; // Importar jsPDF
+
 interface Producto {
   nombre: string;
   precio: number;
@@ -288,7 +290,10 @@ export class PedidosPage implements OnInit {
               mesa: this.mesaSeleccionada,
               total: this.calcularTotal().toFixed(2),
             });
-
+  
+            // Generar el ticket PDF
+            this.generarTicketPDF();
+  
             // Mostrar mensaje de éxito
             const exitoPago = await this.alertController.create({
               header: 'Pago realizado',
@@ -296,14 +301,42 @@ export class PedidosPage implements OnInit {
               buttons: ['OK'],
             });
             await exitoPago.present();
-
+  
             // Limpiar la orden después de pagar
             this.limpiarOrden();
           },
         },
       ],
     });
-
+  
     await confirmacionPago.present();
+  }
+  
+  generarTicketPDF() {
+    const doc = new jsPDF();
+  
+    // Agregar título
+    doc.setFontSize(18);
+    doc.text('Ticket de Pago', 10, 10);
+  
+    // Agregar detalles de la mesa
+    doc.setFontSize(12);
+    doc.text(`Mesa: ${this.mesaSeleccionada}`, 10, 20);
+    doc.text(`Fecha: ${new Date().toLocaleString()}`, 10, 30);
+  
+    // Agregar productos
+    doc.text('Productos:', 10, 40);
+    let y = 50; // Posición Y inicial para los productos
+  
+    this.ordenActual.forEach(item => {
+      doc.text(`${item.nombre} - Cantidad: ${item.cantidad} - Precio Total: $${item.precioTotal.toFixed(2)}`, 10, y);
+      y += 10; // Espacio entre productos
+    });
+  
+    // Total
+    doc.text(`Total: $${this.calcularTotal().toFixed(2)}`, 10, y + 10);
+  
+    // Guardar el PDF
+    doc.save(`ticket_mesa_${this.mesaSeleccionada}.pdf`);
   }
 }
