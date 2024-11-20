@@ -19,7 +19,7 @@
           Pedido {{order.id}} - Mesa {{order.tableNumber}}
         </ion-label>
       </ion-item>
-      
+
       <div *ngIf="order.isExpanded">
         <ion-item *ngFor="let item of order.items">
           <ion-label>
@@ -28,13 +28,14 @@
           </ion-label>
           <ion-badge slot="end">{{item.quantity}}</ion-badge>
         </ion-item>
-        
+
         <ion-item>
-          <ion-button 
-            expand="block" 
-            color="success" 
+          <ion-button
+            expand="block"
+            color="success"
             (click)="markAsCompleted(order)"
-            [disabled]="order.status === 'completed'">
+            [disabled]="order.status === 'completed'"
+          >
             Listo
           </ion-button>
         </ion-item>

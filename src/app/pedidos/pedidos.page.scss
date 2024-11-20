@@ -1,7 +1,8 @@
 body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(#1b1a1a80, #1b1a1a80), url('/assets/img/fondo.jpg') no-repeat;
+  background: linear-gradient(#1b1a1a80, #1b1a1a80),
+    url("/assets/img/fondo.jpg") no-repeat;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -29,8 +30,8 @@ ion-header {
 
 ion-content {
   background: transparent;
-  --background: linear-gradient(#00000080, #00000080), url('/assets/img/fondo.jpg') no-repeat center center / cover;
-
+  --background: linear-gradient(#00000080, #00000080),
+    url("/assets/img/fondo.jpg") no-repeat center center / cover;
 
   .mesa-selector {
     display: flex;
@@ -108,13 +109,13 @@ ion-footer {
     }
 
     ion-button {
-      --min-width: 120px; /* Asegura que todos los botones tengan el mismo tamaño */
-      height: 40px; /* Establece la altura para los botones */
-      margin: 0 0px; /* Espacio entre los botones */
+      --min-width: 120px;
+      height: 40px;
+      margin: 0 0px;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 14px; /* Ajusta el tamaño de texto dentro de los botones */
+      font-size: 14px;
     }
   }
 }

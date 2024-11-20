@@ -3,8 +3,8 @@ import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AlertController } from '@ionic/angular';
-import { OrderService, OrderItem } from '../services/order.service'; // Asegúrate de que la ruta sea correcta
-import { jsPDF } from 'jspdf'; // Importar jsPDF
+import { OrderService, OrderItem } from '../services/order.service';
+import { jsPDF } from 'jspdf';
 
 interface Producto {
   nombre: string;
@@ -12,14 +12,13 @@ interface Producto {
   descripcion?: string;
 }
 
-// En pedidos.page.ts
 interface ItemOrden {
-  id: number; // Identificador único del ítem
-  nombre: string; // Nombre del producto
-  cantidad: number; // Cantidad de productos
-  precioUnitario: number; // Precio por unidad
-  precioTotal: number; // Precio total del ítem
-  nota?: string; // Nota opcional
+  id: number;
+  nombre: string;
+  cantidad: number;
+  precioUnitario: number;
+  precioTotal: number;
+  nota?: string;
 }
 
 interface Categoria {
@@ -40,12 +39,12 @@ export class PedidosPage implements OnInit {
   mesaSeleccionada: number | null = null;
   ordenActual: ItemOrden[] = [];
   productosMostrados: Producto[] = [];
-  categoriaSeleccionada: string | null = null; // Cambiado a null
+  categoriaSeleccionada: string | null = null;
   mesas: number[] = Array.from({ length: 20 }, (_, i) => i + 1);
   mesasFiltradas: number[] = this.mesas;
   total: number = 0;
 
- newOrder = {
+  newOrder = {
     id: 0,
     tableNumber: null,
     items: [],
@@ -158,37 +157,33 @@ export class PedidosPage implements OnInit {
       (item) => item.nombre === producto.nombre
     );
     if (itemExistente) {
-      // Aumentar la cantidad y actualizar el precio total
       itemExistente.cantidad++;
       itemExistente.precioTotal =
         itemExistente.cantidad * itemExistente.precioUnitario;
     } else {
-      // Agregar nuevo producto a la orden
       this.ordenActual.push({
         id: this.ordenActual.length + 1,
         nombre: producto.nombre,
         cantidad: 1,
         precioUnitario: producto.precio,
-        precioTotal: producto.precio, // Inicialmente es el precio unitario
+        precioTotal: producto.precio,
       });
     }
-    this.actualizarTotal(); // Actualiza el total después de agregar
+    this.actualizarTotal();
   }
 
   actualizarCantidad(item: ItemOrden, cantidad: number) {
     item.cantidad += cantidad;
     if (item.cantidad < 1) {
-      item.cantidad = 1; // No permitir que sea menor a 1
+      item.cantidad = 1;
     }
-    item.precioTotal = item.cantidad * item.precioUnitario; // Recalcula el precio total
-    this.actualizarTotal(); // Actualiza el total después de cambiar la cantidad
+    item.precioTotal = item.cantidad * item.precioUnitario;
+    this.actualizarTotal();
   }
 
   eliminarProducto(item: any) {
-    // Encuentra el índice del producto en la orden actual
     const index = this.ordenActual.indexOf(item);
     if (index > -1) {
-      // Elimina el producto de la orden actual
       this.ordenActual.splice(index, 1);
     }
   }
@@ -199,11 +194,11 @@ export class PedidosPage implements OnInit {
 
   limpiarOrden() {
     this.ordenActual = [];
-    this.mesaSeleccionada = null; // Limpia la mesa seleccionada
-    this.productosMostrados = []; // Limpia los productos mostrados
-    this.mesasFiltradas = this.mesas; // Resetea el filtro de mesas
-    this.categoriaSeleccionada = ''; // Resetea la categoría seleccionada
-    this.total = 0; // Resetea el total
+    this.mesaSeleccionada = null;
+    this.productosMostrados = [];
+    this.mesasFiltradas = this.mesas;
+    this.categoriaSeleccionada = '';
+    this.total = 0;
   }
 
   actualizarTotal() {
@@ -234,38 +229,38 @@ export class PedidosPage implements OnInit {
 
   async enviarOrden() {
     if (this.mesaSeleccionada !== null && this.ordenActual.length > 0) {
-        const items: OrderItem[] = this.ordenActual.map(item => ({
-            name: item.nombre,
-            quantity: item.cantidad,
-            precioUnitario: item.precioUnitario,
-            precioTotal: item.precioTotal,
-            notes: item.nota,
-        }));
+      const items: OrderItem[] = this.ordenActual.map((item) => ({
+        name: item.nombre,
+        quantity: item.cantidad,
+        precioUnitario: item.precioUnitario,
+        precioTotal: item.precioTotal,
+        notes: item.nota,
+      }));
 
-        // Llamar al método addOrder para guardar la orden en el historial
-        this.orderService.addOrder(
-            this.mesaSeleccionada,
-            items,
-            this.calcularTotal()
-        );
+      this.orderService.addOrder(
+        this.mesaSeleccionada,
+        items,
+        this.calcularTotal()
+      );
 
-        const exitoEnvio = await this.alertController.create({
-            header: 'Orden Enviada',
-            message: 'La orden ha sido enviada exitosamente al chef.',
-            buttons: ['OK'],
-        });
-        await exitoEnvio.present();
+      const exitoEnvio = await this.alertController.create({
+        header: 'Orden Enviada',
+        message: 'La orden ha sido enviada exitosamente al chef.',
+        buttons: ['OK'],
+      });
+      await exitoEnvio.present();
 
-        this.limpiarOrden(); // Limpia la orden después de enviar
+      this.limpiarOrden();
     } else {
-        const errorEnvio = await this.alertController.create({
-            header: 'Error',
-            message: 'Por favor, selecciona una mesa y agrega productos a la orden.',
-            buttons: ['OK'],
-        });
-        await errorEnvio.present();
+      const errorEnvio = await this.alertController.create({
+        header: 'Error',
+        message:
+          'Por favor, selecciona una mesa y agrega productos a la orden.',
+        buttons: ['OK'],
+      });
+      await errorEnvio.present();
     }
-}
+  }
 
   async pagarCuenta() {
     const confirmacionPago = await this.alertController.create({
@@ -283,58 +278,55 @@ export class PedidosPage implements OnInit {
         {
           text: 'Confirmar',
           handler: async () => {
-            // Lógica de pago
             console.log('Pago realizado:', {
               mesa: this.mesaSeleccionada,
               total: this.calcularTotal().toFixed(2),
             });
-  
-            // Generar el ticket PDF
+
             this.generarTicketPDF();
-  
-            // Mostrar mensaje de éxito
+
             const exitoPago = await this.alertController.create({
               header: 'Pago realizado',
               message: 'La cuenta ha sido pagada exitosamente.',
               buttons: ['OK'],
             });
             await exitoPago.present();
-  
-            // Limpiar la orden después de pagar
+
             this.limpiarOrden();
           },
         },
       ],
     });
-  
+
     await confirmacionPago.present();
   }
-  
+
   generarTicketPDF() {
     const doc = new jsPDF();
-  
-    // Agregar título
+
     doc.setFontSize(18);
     doc.text('Ticket de Pago', 10, 10);
-  
-    // Agregar detalles de la mesa
+
     doc.setFontSize(12);
     doc.text(`Mesa: ${this.mesaSeleccionada}`, 10, 20);
     doc.text(`Fecha: ${new Date().toLocaleString()}`, 10, 30);
-  
-    // Agregar productos
+
     doc.text('Productos:', 10, 40);
-    let y = 50; // Posición Y inicial para los productos
-  
-    this.ordenActual.forEach(item => {
-      doc.text(`${item.nombre} - Cantidad: ${item.cantidad} - Precio Total: $${item.precioTotal.toFixed(2)}`, 10, y);
-      y += 10; // Espacio entre productos
+    let y = 50;
+
+    this.ordenActual.forEach((item) => {
+      doc.text(
+        `${item.nombre} - Cantidad: ${
+          item.cantidad
+        } - Precio Total: $${item.precioTotal.toFixed(2)}`,
+        10,
+        y
+      );
+      y += 10;
     });
-  
-    // Total
+
     doc.text(`Total: $${this.calcularTotal().toFixed(2)}`, 10, y + 10);
-  
-    // Guardar el PDF
+
     doc.save(`ticket_mesa_${this.mesaSeleccionada}.pdf`);
   }
 }

@@ -28,29 +28,28 @@ h1 {
   color: white;
   font-size: 20px;
   text-align: center;
-  margin-bottom: 20px; /* Espacio entre el título y el buscador */
+  margin-bottom: 20px;
 }
 
 ion-content {
-  --background: linear-gradient(#00000080, #00000080), url('/assets/img/fondo.jpg') no-repeat center center / cover;
+  --background: linear-gradient(#00000080, #00000080),
+    url("/assets/img/fondo.jpg") no-repeat center center / cover;
   min-height: 100vh;
-  padding: 500px; /* Ajusta este valor según tus necesidades */
+  padding: 500px;
 }
 
-/* Espacio extra debajo del buscador */
 ion-searchbar {
-  margin-bottom: 30px; /* Ajusta este valor según tus necesidades */
+  margin-bottom: 30px;
 }
 
 ion-item {
   color: white;
-  text-align: left; 
+  text-align: left;
   border-radius: 0px;
-  padding: 10px; 
-  margin-bottom: 15px; /* Añade espacio entre cada pedido */
+  padding: 10px;
+  margin-bottom: 15px;
 }
 
-/* Opcional: si deseas un efecto de separación al pasar el mouse */
 ion-item:hover {
-  background-color: rgba(255, 255, 255, 0.1); /* Cambia el color de fondo al pasar el mouse */
+  background-color: rgba(255, 255, 255, 0.1);
 }

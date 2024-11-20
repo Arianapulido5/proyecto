@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 import { OrdenPage } from './orden.page';
 
 describe('OrdenPage', () => {
@@ -9,7 +9,7 @@ describe('OrdenPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [IonicModule.forRoot(), FormsModule, OrdenPage] 
+      imports: [IonicModule.forRoot(), FormsModule, OrdenPage],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OrdenPage);
@@ -42,20 +42,24 @@ describe('OrdenPage', () => {
   });
 
   it('should filter orders based on search term for order or table', () => {
-    component.searchTerm = '1'; 
+    component.searchTerm = '1';
     component.filterOrders();
     expect(component.filteredOrders.length).toBe(1);
     expect(component.filteredOrders[0].id).toBe(1);
-    
-    component.searchTerm = '5'; 
+
+    component.searchTerm = '5';
     component.filterOrders();
     expect(component.filteredOrders.length).toBe(1);
     expect(component.filteredOrders[0].tableNumber).toBe(5);
 
-    component.searchTerm = 'Pizza'; 
+    component.searchTerm = 'Pizza';
     component.filterOrders();
     expect(component.filteredOrders.length).toBe(1);
-    expect(component.filteredOrders[0].items.some(item => item.name === 'Pizza Margherita')).toBeTrue();
+    expect(
+      component.filteredOrders[0].items.some(
+        (item) => item.name === 'Pizza Margherita'
+      )
+    ).toBeTrue();
 
     component.searchTerm = '999';
     component.filterOrders();

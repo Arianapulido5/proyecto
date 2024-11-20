@@ -8,30 +8,26 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, IonicModule],
   templateUrl: './principal.page.html',
-  styleUrls: ['./principal.page.scss']
+  styleUrls: ['./principal.page.scss'],
 })
 export class PrincipalPage implements OnInit {
+  constructor(private router: Router) {}
 
-  constructor(
-    private router: Router
-  ) { }
+  ngOnInit() {}
 
-  ngOnInit() {
-  }
-
-  onClickAdministrador(){
+  onClickAdministrador() {
     this.router.navigate(['/administrador']);
   }
-  onClickMesero(){
+  onClickMesero() {
     this.router.navigate(['/pedidos']);
   }
-  onClickChef(){
+  onClickChef() {
     this.router.navigate(['/orden']);
   }
-  onClickHistorial(){
+  onClickHistorial() {
     this.router.navigate(['/historial']);
   }
-  onClickSalir(){
+  onClickSalir() {
     this.router.navigate(['/login']);
   }
 }

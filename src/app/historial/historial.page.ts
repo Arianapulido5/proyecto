@@ -9,18 +9,20 @@ import { OrderService, Order } from '../services/order.service';
   templateUrl: './historial.page.html',
   styleUrls: ['./historial.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule]
+  imports: [IonicModule, CommonModule, FormsModule],
 })
 export class HistorialPage implements OnInit {
   historicalOrders: Order[] = [];
   filteredOrders: Order[] = [];
   searchTerm: string = '';
-  
+
   constructor(private orderService: OrderService) {}
 
   ngOnInit() {
-    this.orderService.getHistoricalOrders().subscribe(orders => {
-      this.historicalOrders = orders.sort((a, b) => b.date.getTime() - a.date.getTime());
+    this.orderService.getHistoricalOrders().subscribe((orders) => {
+      this.historicalOrders = orders.sort(
+        (a, b) => b.date.getTime() - a.date.getTime()
+      );
       this.filterOrders();
     });
   }
@@ -32,10 +34,11 @@ export class HistorialPage implements OnInit {
     }
 
     const term = this.searchTerm.toLowerCase();
-    this.filteredOrders = this.historicalOrders.filter(order =>
-      order.tableNumber.toString().includes(term) ||
-      order.items.some(item => item.name.toLowerCase().includes(term)) ||
-      order.status.toLowerCase().includes(term)
+    this.filteredOrders = this.historicalOrders.filter(
+      (order) =>
+        order.tableNumber.toString().includes(term) ||
+        order.items.some((item) => item.name.toLowerCase().includes(term)) ||
+        order.status.toLowerCase().includes(term)
     );
   }
 

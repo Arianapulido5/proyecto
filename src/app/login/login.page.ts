@@ -1,4 +1,3 @@
-
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -9,19 +8,14 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule]
+  imports: [IonicModule, CommonModule],
 })
 export class LoginPage implements OnInit {
+  constructor(private router: Router) {}
 
-  constructor(
-    private router: Router
-  ) { }
+  ngOnInit() {}
 
-  ngOnInit() {
-  }
-
-  onClickIngresar(){
+  onClickIngresar() {
     this.router.navigate(['/principal']);
   }
-
 }
