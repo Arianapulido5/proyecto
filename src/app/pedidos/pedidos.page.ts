@@ -234,40 +234,38 @@ export class PedidosPage implements OnInit {
 
   async enviarOrden() {
     if (this.mesaSeleccionada !== null && this.ordenActual.length > 0) {
-      // Transformar ordenActual a OrderItem[]
-      const items: OrderItem[] = this.ordenActual.map(item => ({
-        name: item.nombre, // Asignar el nombre
-        quantity: item.cantidad, // Asignar la cantidad
-        precioUnitario: item.precioUnitario, // Asignar el precio unitario
-        precioTotal: item.precioTotal, // Asignar el precio total
-        notes: item.nota, // Asignar la nota si existe
-      }));
-  
-      this.orderService.addOrder(
-        this.mesaSeleccionada, // Número de mesa
-        items, // Items transformados a OrderItem[]
-        this.calcularTotal() // Total de la orden
-      );
-  
-      // Mostrar mensaje de éxito
-      const exitoEnvio = await this.alertController.create({
-        header: 'Orden Enviada',
-        message: 'La orden ha sido enviada exitosamente al chef.',
-        buttons: ['OK'],
-      });
-      await exitoEnvio.present();
-  
-      this.limpiarOrden(); // Limpia la orden después de enviar
+        const items: OrderItem[] = this.ordenActual.map(item => ({
+            name: item.nombre,
+            quantity: item.cantidad,
+            precioUnitario: item.precioUnitario,
+            precioTotal: item.precioTotal,
+            notes: item.nota,
+        }));
+
+        // Llamar al método addOrder para guardar la orden en el historial
+        this.orderService.addOrder(
+            this.mesaSeleccionada,
+            items,
+            this.calcularTotal()
+        );
+
+        const exitoEnvio = await this.alertController.create({
+            header: 'Orden Enviada',
+            message: 'La orden ha sido enviada exitosamente al chef.',
+            buttons: ['OK'],
+        });
+        await exitoEnvio.present();
+
+        this.limpiarOrden(); // Limpia la orden después de enviar
     } else {
-      // Manejar el caso en que no hay mesa seleccionada o no hay productos en la orden
-      const errorEnvio = await this.alertController.create({
-        header: 'Error',
-        message: 'Por favor, selecciona una mesa y agrega productos a la orden.',
-        buttons: ['OK'],
-      });
-      await errorEnvio.present();
+        const errorEnvio = await this.alertController.create({
+            header: 'Error',
+            message: 'Por favor, selecciona una mesa y agrega productos a la orden.',
+            buttons: ['OK'],
+        });
+        await errorEnvio.present();
     }
-  }
+}
 
   async pagarCuenta() {
     const confirmacionPago = await this.alertController.create({

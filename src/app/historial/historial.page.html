@@ -17,6 +17,7 @@
     <ion-item-group *ngFor="let order of filteredOrders">
       <ion-item (click)="toggleOrder(order)" button detail="true">
         <ion-label>
+          
           <h2>Mesa {{order.tableNumber}} - Pedido {{order.id}}</h2>
           <p>{{formatDate(order.date)}}</p>
         </ion-label>

@@ -1,4 +1,3 @@
-// src/app/historial/historial.page.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
