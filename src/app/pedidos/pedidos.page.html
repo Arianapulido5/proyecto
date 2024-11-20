@@ -17,10 +17,11 @@
 
   <!-- Selector de Mesa-->
   <div class="mesa-selector">
-    <ion-button 
-      *ngFor="let mesa of mesasFiltradas" 
+    <ion-button
+      *ngFor="let mesa of mesasFiltradas"
       [color]="mesaSeleccionada === mesa ? 'primary' : 'medium'"
-      (click)="seleccionarMesa(mesa)">
+      (click)="seleccionarMesa(mesa)"
+    >
       {{mesa}}
     </ion-button>
   </div>
@@ -30,7 +31,10 @@
     <ion-item>
       <ion-label>Categoría</ion-label>
       <ion-select (ionChange)="cambiarCategoria($event)">
-        <ion-select-option *ngFor="let categoria of categorias" [value]="categoria.id">
+        <ion-select-option
+          *ngFor="let categoria of categorias"
+          [value]="categoria.id"
+        >
           {{categoria.nombre}}
         </ion-select-option>
       </ion-select>
@@ -38,7 +42,11 @@
 
     <!-- Lista de Productos -->
     <ion-list class="productos-list">
-      <ion-item *ngFor="let producto of productosMostrados" button (click)="agregarProducto(producto)">
+      <ion-item
+        *ngFor="let producto of productosMostrados"
+        button
+        (click)="agregarProducto(producto)"
+      >
         <ion-label>
           <h2>{{producto.nombre}}</h2>
           <p *ngIf="producto.descripcion">{{producto.descripcion}}</p>
@@ -60,7 +68,8 @@
             <ion-input
               placeholder="Agregar nota"
               [(ngModel)]="item.nota"
-              class="nota-input">
+              class="nota-input"
+            >
             </ion-input>
           </ion-label>
           <div class="botones">
@@ -72,15 +81,19 @@
           </div>
         </ion-item>
       </ion-list>
-      
     </div>
   </ng-container>
 </ion-content>
 
+<!-- Footer con botones -->
 <ion-footer>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="limpiarOrden()" [disabled]="!ordenActual.length">
+      <ion-button
+        color="medium"
+        (click)="limpiarOrden()"
+        [disabled]="!ordenActual.length"
+      >
         Limpiar
       </ion-button>
     </ion-buttons>
@@ -88,14 +101,21 @@
       Total: {{calcularTotal().toFixed(2)}}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button color="success" (click)="pagarCuenta()" [disabled]="!ordenActual.length || !mesaSeleccionada">
+      <ion-button
+        color="success"
+        (click)="pagarCuenta()"
+        [disabled]="!ordenActual.length || !mesaSeleccionada"
+      >
         Pagar
+      </ion-button>
+      <!-- Botón de Enviar -->
+      <ion-button
+        color="primary"
+        (click)="confirmarEnvio()"
+        [disabled]="!ordenActual.length || !mesaSeleccionada"
+      >
+        Enviar
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="confirmarEnvio()" [disabled]="!ordenActual.length || !mesaSeleccionada">
-      <ion-icon name="send"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-footer>

@@ -1,7 +1,8 @@
 body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(#1b1a1a80, #1b1a1a80), url('/assets/img/fondo.jpg') no-repeat center center fixed;
+  background: linear-gradient(#1b1a1a80, #1b1a1a80),
+    url("/assets/img/fondo.jpg") no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -26,8 +27,8 @@ ion-header {
 }
 
 ion-content {
-  background: transparent; /* Asegúrate de que el fondo del ion-content sea transparente */
-  --background: transparent; /* Asegúrate de que no haya un fondo por defecto */
+  background: transparent;
+  --background: transparent;
 
   .mesa-selector {
     display: flex;
@@ -54,20 +55,20 @@ ion-content {
 
       ion-label {
         flex: 1;
-        color: white; /* Asegúrate de que el texto sea visible */
+        color: white;
       }
 
       .nota-input {
         width: 150px;
       }
 
-      div[slot='end'] {
+      div[slot="end"] {
         display: flex;
-        gap: 8px; /* Espaciado entre los botones */
+        gap: 8px;
 
         ion-button {
-          --background: #fff; /* Fondo blanco para los botones */
-          color: black; /* Texto negro */
+          --background: #fff;
+          color: black;
           width: 36px;
           height: 36px;
           padding: 0;
@@ -83,23 +84,35 @@ ion-content {
   gap: 10px;
 
   button {
-    background: none; /* Eliminar el fondo */
-    color: rgb(255, 255, 255); /* Color del icono */
-    border: none; 
+    background: none;
+    color: rgb(255, 255, 255);
+    border: none;
   }
 }
 
 ion-footer {
+  --background: black;
+  color: white;
+
   ion-toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
+    padding: 0 10px;
 
-  ion-fab {
-    position: fixed;
-    bottom: 20px; /* Separación del borde inferior */
-    right: 20px; /* Separación del borde derecho */
-    z-index: 10; /* Asegurarse de que esté por encima de otros elementos */
+    ion-buttons {
+      display: flex;
+      align-items: center;
+    }
+
+    ion-button {
+      --min-width: 120px; /* Asegura que todos los botones tengan el mismo tamaño */
+      height: 40px; /* Establece la altura para los botones */
+      margin: 0 0px; /* Espacio entre los botones */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px; /* Ajusta el tamaño de texto dentro de los botones */
+    }
   }
 }

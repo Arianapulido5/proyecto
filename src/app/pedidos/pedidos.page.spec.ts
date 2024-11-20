@@ -10,7 +10,7 @@ describe('PedidosPage', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [IonicModule.forRoot(), FormsModule, CommonModule, PedidosPage]
+      imports: [IonicModule.forRoot(), FormsModule, CommonModule, PedidosPage],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PedidosPage);
@@ -32,7 +32,7 @@ describe('PedidosPage', () => {
   it('should filter mesas correctly', () => {
     const event = { target: { value: '1' } };
     component.buscarMesa(event);
-    expect(component.mesasFiltradas.length).toBe(11); 
+    expect(component.mesasFiltradas.length).toBe(11);
   });
 
   it('should select a table correctly', () => {
@@ -64,5 +64,6 @@ describe('PedidosPage', () => {
   });
 
   it('should remove product from the order if quantity is zero', () => {
-    const producto = { nombre: 'COCA COLA 600 ML', precio: 18 }});
+    const producto = { nombre: 'COCA COLA 600 ML', precio: 18 };
+  });
 });
