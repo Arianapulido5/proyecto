@@ -24,9 +24,17 @@
             <a href="#">¿Olvidé la Contraseña?</a>
           </div>
 
-          <ion-button expand="block" (click)="onClickIngresar()" type="button"
-            >Acceder</ion-button
+          <ion-button expand="block" (click)="onClickIngresar()" type="button">
+            Acceder
+          </ion-button>
+
+          <ion-button
+            expand="block"
+            color="tertiary"
+            (click)="onGoogleSignIn()"
           >
+            Iniciar sesión con Google
+          </ion-button>
         </form>
       </div>
     </div>
