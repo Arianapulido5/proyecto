@@ -15,7 +15,7 @@ import { Component, OnInit } from '@angular/core';
 export class LoginPage implements OnInit {
   user: any;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit() {
     if (Capacitor.getPlatform() === 'web') {
@@ -29,6 +29,7 @@ export class LoginPage implements OnInit {
   }
 
   async onClickIngresar() {
+    this.router.navigate(['/principal']);
     console.log('Inicio de sesión estándar');
   }
 
